@@ -9,6 +9,69 @@
 </head>
 <body>
     
+
+    <label for="mtitle">Movie Title</label>
+    <input type = "text" id="mtitle">
+    <label for="mgenre">Movie Genre</label>
+    <input type = "text" id="mgenre">
+    <br>
+    <label for="myear">Release Date (Month and Year):</label>
+    <input type = "month" id="myear">
+    <label for="mdirector">Director</label>
+    <input type = "text" id="mdirector">
+    <br>
+    <label for="mrating">Rating (between 0 and 10):</label>
+    <input type = "number" id="mrating" min="0" max="10">
+    <br>
+
+    <button type="button" id="add">Add Movie</button>
+    <br>
+    <div id="displayHeader">The actual list</div>
+    <br>
+    <div id="display"></div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        movie1 = {
+        title: "Let Me In",
+        genre: "Horror/Romance",
+        year: "2010",
+        director: "Matt Reeves",
+        rating: "7"
+        }
+        $("#add").on("click", function(){
+            inputMovie = {
+            title: "",
+            genre: "",
+            year: "",
+            director: "",
+            rating: ""
+            }
+
+            movieList = [];
+            movieList.push(movie1);
+            document.getElementById("display").innerHTML = Object.values(movie1);
+                
+            inputMovie.title = $("#mtitle").val();
+            inputMovie.genre = $("#mgenre").val();
+            inputMovie.year = $("#myear").val();
+            inputMovie.director = $("#mdirector").val();
+            inputMovie.rating = $("#mrating").val();
+            movieList.push(inputMovie);
+            refreshList();
+                
+        });
+    });
+
+        function refreshList(){
+        newlist = "";
+        movieList.forEach((movie) => {
+            newlist += Object.values(movie) + "<br>";
+        });
+        document.getElementById("displayHeader").innerHTML = "Your refreshed movie list:";
+        document.getElementById("display").innerHTML = newlist;
+        }
+</script>
 </body>
 </html>
