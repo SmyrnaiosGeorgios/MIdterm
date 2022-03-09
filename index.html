@@ -28,18 +28,53 @@
     <br>
     <div id="displayHeader">The actual list</div>
     <br>
-    <div id="display"></div>
+
+    <table class = "table table-dark table-striped">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Genre</td>
+                <td>Year</td>
+                <td>Director</td>
+                <td>Rating</td>
+            </tr>
+        </thead>
+        <tbody id = "table">
+            <tr id="display" >
+                <td>Placeholder</td>
+                <td>Placeholder2</td>
+                <td>Placeholder3</td>
+                <td>Placeholder4</td>
+                <td>Placeholder5</td>
+            </tr>
+        </tbody>
+    </table>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+    //Start when the html is loaded
     $(document).ready(function(){
+        //Initial movie entry
         movie1 = {
         title: "Let Me In",
         genre: "Horror/Romance",
         year: "2010",
         director: "Matt Reeves",
         rating: "7"
+
+        
         }
+        //Declaration for list of movie objects
+        movieList = [];
+        movieList.push(movie1);
+
+        //Clear the HTML table and append the movie list
+        $("#table").replaceWith('<tbody id = "table"></tbody>')
+        movieList.forEach(function(item){
+                    $("#table").append('<tr><td>'+item.title+'</td><td>'+item.genre+'</td><td>'+item.year+'</td><td>'+item.director+'</td><td>'+item.rating+'</td></tr>')
+        });
+
+        //Onclick function for the add button
         $("#add").on("click", function(){
             inputMovie = {
             title: "",
@@ -48,11 +83,7 @@
             director: "",
             rating: ""
             }
-
-            movieList = [];
-            movieList.push(movie1);
-            document.getElementById("display").innerHTML = Object.values(movie1);
-                
+ 
             inputMovie.title = $("#mtitle").val();
             inputMovie.genre = $("#mgenre").val();
             inputMovie.year = $("#myear").val();
@@ -60,18 +91,24 @@
             inputMovie.rating = $("#mrating").val();
             movieList.push(inputMovie);
             refreshList();
-                
         });
     });
-
+        
+        //Function that updates the list with the new entry and updates the table
         function refreshList(){
-        newlist = "";
-        movieList.forEach((movie) => {
-            newlist += Object.values(movie) + "<br>";
-        });
+        //Cleat the list before adding new entries
+        $("#table").replaceWith('<tbody id = "table"></tbody>')
+        console.log("table cleared");
+
         document.getElementById("displayHeader").innerHTML = "Your refreshed movie list:";
-        document.getElementById("display").innerHTML = newlist;
+        movieList.forEach(function(item){
+                    $("#table").append('<tr><td>'+item.title+'</td><td>'+item.genre+'</td><td>'+item.year+'</td><td>'+item.director+'</td><td>'+item.rating+'</td></tr>')
+                    //console.log("entry added");
+        });
         }
+
+
+
 </script>
 </body>
 </html>
