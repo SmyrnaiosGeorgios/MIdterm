@@ -29,7 +29,7 @@
     <div id="displayHeader">The actual list</div>
     <br>
 
-    <table class = "table table-dark table-striped">
+    <table class = "table table-dark table-striped" id = "movieTable">
         <thead>
             <tr>
                 <td>Title</td>
@@ -41,15 +41,14 @@
         </thead>
         <tbody id = "table">
             <tr id="display" >
-                <td>Placeholder</td>
-                <td>Placeholder2</td>
-                <td>Placeholder3</td>
-                <td>Placeholder4</td>
-                <td>Placeholder5</td>
+                <td>PlaceholderTitle</td>
+                <td>PlaceholderGenre</td>
+                <td>PlaceholderYear</td>
+                <td>PlaceholderDirector</td>
+                <td>PlaceholderRating</td>
             </tr>
         </tbody>
     </table>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     //Start when the html is loaded
@@ -70,42 +69,68 @@
 
         //Clear the HTML table and append the movie list
         $("#table").replaceWith('<tbody id = "table"></tbody>')
+        idcount = 0;
         movieList.forEach(function(item){
-                    $("#table").append('<tr><td>'+item.title+'</td><td>'+item.genre+'</td><td>'+item.year+'</td><td>'+item.director+'</td><td>'+item.rating+'</td></tr>')
+                    btnhtml = '<button type="button" class="btn btn-danger" id = "'+idcount+'">Delete</button>';
+                    $("#table").append('<tr><td>'+item.title+'</td><td>'+item.genre+'</td><td>'+item.year+'</td><td>'+item.director+'</td><td>'+item.rating+'</td><td>'+btnhtml+'</td></tr>')
+                    idcount++;
         });
 
-        //Onclick function for the add button
-        $("#add").on("click", function(){
-            inputMovie = {
-            title: "",
-            genre: "",
-            year: "",
-            director: "",
-            rating: ""
-            }
+
+    });
+    //Onclick function for the add button
+    $("#add").on("click", function(){
+        inputMovie = {
+        title: "",
+        genre: "",
+        year: "",
+        director: "",
+        rating: ""
+        }
  
-            inputMovie.title = $("#mtitle").val();
-            inputMovie.genre = $("#mgenre").val();
-            inputMovie.year = $("#myear").val();
-            inputMovie.director = $("#mdirector").val();
-            inputMovie.rating = $("#mrating").val();
-            movieList.push(inputMovie);
-            refreshList();
-        });
+        inputMovie.title = $("#mtitle").val();
+        inputMovie.genre = $("#mgenre").val();
+        inputMovie.year = $("#myear").val();
+        inputMovie.director = $("#mdirector").val();
+        inputMovie.rating = $("#mrating").val();
+        movieList.push(inputMovie);
+        console.log("Movie Added");
+        refreshList();
     });
         
-        //Function that updates the list with the new entry and updates the table
-        function refreshList(){
+    //Function that updates the list with the new entry and updates the table
+    function refreshList(){
         //Cleat the list before adding new entries
         $("#table").replaceWith('<tbody id = "table"></tbody>')
-        console.log("table cleared");
+            
+        //Sort array
+        movieList.sort((a, b) => {
+            let ta = a.title.toLowerCase(),
+                tb = b.title.toLowerCase();
 
+            if (ta < tb) {
+                return -1;
+            }
+            if (ta > tb) {
+                return 1;
+            }
+            return 0;
+        });
+        idcount = 0;
         document.getElementById("displayHeader").innerHTML = "Your refreshed movie list:";
         movieList.forEach(function(item){
-                    $("#table").append('<tr><td>'+item.title+'</td><td>'+item.genre+'</td><td>'+item.year+'</td><td>'+item.director+'</td><td>'+item.rating+'</td></tr>')
-                    //console.log("entry added");
+            btnhtml = '<button type="button" class="btn btn-danger" id = "'+idcount+'">Delete</button>';
+            $("#table").append('<tr><td>'+item.title+'</td><td>'+item.genre+'</td><td>'+item.year+'</td><td>'+item.director+'</td><td>'+item.rating+'</td><td>'+btnhtml+'</td></tr>')
+            idcount++;
         });
-        }
+        console.log("Table Refreshed");
+    }
+
+    $('#movieTable').on('click', 'button.btn.btn-danger', function() {
+        movieList.splice(this.id);
+        console.log("Removed entry with number: "+this.id);
+        refreshList();
+    });
 
 
 
