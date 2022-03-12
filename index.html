@@ -127,7 +127,7 @@
     }
 
     $('#movieTable').on('click', 'button.btn.btn-danger', function() {
-        movieList.splice(this.id);
+        movieList.splice(this.id,1);
         console.log("Removed entry with number: "+this.id);
         refreshList();
     });
